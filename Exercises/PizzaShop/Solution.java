@@ -2,51 +2,54 @@ import java.util.*;
 
 public class Solution {
 
-    public static int[] orderPizza(int[] orderPlaced, int size) {
-        // Use a LinkedList for easy removal of the first element and to add to the end
-        LinkedList<Integer> screenOrders = new LinkedList<>();
+    public static int[] orderPizza(int[] orderNumbers, int size) {
+        LinkedList<Integer> displayScreen = new LinkedList<>();
+        ArrayList<Integer> tempAnswer = new ArrayList<>();
+        for (int i = 0; i < orderNumbers.length; i++) {
+            int currentOrder = orderNumbers[i];
 
-        // Process each order
-        for (int order : orderPlaced) {
-            // If the screen is full, remove the first order
-            if (screenOrders.size() == size) {
-                screenOrders.poll();
+            // Add the current order to the display screen
+            displayScreen.addLast(currentOrder);
+
+            // When the screen is full, process to find the first meat pizza order
+            if (displayScreen.size() >= size) {
+                int firstMeatPizzaOrder = 0; // Assume no meat pizza order by default
+                for (int order : displayScreen) {
+                    if (order < 0) {
+                        firstMeatPizzaOrder = order;
+                        break; // Exit loop once the first meat pizza order is found
+                    }
+                }
+                tempAnswer.add(firstMeatPizzaOrder);
+                displayScreen.removeFirst(); // Move the window forward
             }
-            // Add the new order to the end of the screen
-            screenOrders.offer(order);
         }
 
-        // Convert the LinkedList to an int array for the result
-        int[] result = new int[screenOrders.size()];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = screenOrders.get(i);
+        // Convert ArrayList to array for return
+        int[] answer = new int[tempAnswer.size()];
+        for (int i = 0; i < answer.length; i++) {
+            answer[i] = tempAnswer.get(i);
         }
-
-        return result;
+        return answer;
     }
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner in = new Scanner(System.in);
 
-        // Read the total number of orders
-        int orderPlacedSize = scanner.nextInt();
+        int orderPlacedSize = in.nextInt();
         int[] orderPlaced = new int[orderPlacedSize];
 
-        // Read each order into the array
         for (int i = 0; i < orderPlacedSize; i++) {
-            orderPlaced[i] = scanner.nextInt();
+            orderPlaced[i] = in.nextInt();
         }
 
-        // Read the size of the screen
-        int size = scanner.nextInt();
+        int size = in.nextInt();
 
-        // Get the final orders on the screen
         int[] result = orderPizza(orderPlaced, size);
 
-        // Print the orders that are currently on the screen
-        for (int i = 0; i < result.length; i++) {
+        for (int i = 0; i < result.length - 1; i++) {
             System.out.print(result[i] + " ");
         }
-        scanner.close();
+        System.out.println(result[result.length - 1]);
     }
 }
