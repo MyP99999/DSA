@@ -8,7 +8,7 @@ public class Solution {
         int count = 0;
         int fromIndex = 0;
 
-        while ((fromIndex = parent.indexOf(sub, fromIndex)) != -1) {
+        while ((fromIndex = parent.toLowerCase().indexOf(sub.toLowerCase(), fromIndex)) != -1) {
             count++;
             fromIndex++;
         }
