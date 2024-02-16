@@ -98,6 +98,36 @@ public class Graph {
     }
   }
 
+  //  Topological Sort
+  public void addDirectedEdge(int i, int j) {
+    adjacencyMatrix[i][j] = 1;
+  }
+
+  void topologicalVisit(GraphNode node, Stack<GraphNode> stack) {
+    ArrayList<GraphNode> neighbors = getNeighbors(node);
+    for (GraphNode neighbor : neighbors) {
+      if (!neighbor.isVisited) {
+        topologicalVisit(neighbor, stack);
+      }
+    }
+    node.isVisited = true;
+    stack.push(node);
+  }
+
+  void topologicalSort() {
+    Stack<GraphNode> stack = new Stack<>();
+    for (GraphNode node : nodeList) {
+      if (!node.isVisited) {
+        topologicalVisit(node, stack);
+      }
+    }
+
+    while (!stack.isEmpty()) {
+      System.out.print(stack.pop().name + " ");
+    }
+  }
+
+
 
 
 }
